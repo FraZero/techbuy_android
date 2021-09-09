@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Account">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="230dp"
+                >
+
+                <ImageView
+                    android:id="@+id/photo_profile_user"
+                    android:layout_width="150dp"
+                    android:layout_height="200dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_centerHorizontal="true"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_person_24_black" />
+
+            </RelativeLayout>
+
+
+            <TextView
+                android:id="@+id/info"
+                style="@style/TextAppearance.MaterialComponents.Headline6"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:gravity="center"
+                android:inputType="text"
+                android:padding="8dp"
+                android:text="Informazioni Profilo"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.476"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/user_fullname_profile"
+                style="@style/TextAppearance.MaterialComponents.Headline6"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="10dp"
+                android:drawableLeft="@drawable/ic_person_24_black"
+                android:drawablePadding="10dp"
+                android:drawableTint="@color/black"
+                android:hint="Fullname"
+                android:inputType="text"
+                android:padding="8dp"
+                android:textColor="#191818"
+                android:textColorHint="#92979A"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.476"
+                app:layout_constraintStart_toStartOf="parent" />
+
+
+            <TextView
+                android:id="@+id/user_email_profile"
+                style="@style/TextAppearance.MaterialComponents.Headline6"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:drawableLeft="@drawable/ic_email_24_black"
+                android:drawablePadding="10dp"
+                android:drawableTint="@color/black"
+                android:hint="Email"
+                android:inputType="text"
+                android:padding="8dp"
+                android:textColor="#191818"
+                android:textColorHint="#92979A"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.476"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/user_phone_profile"
+                style="@style/TextAppearance.MaterialComponents.Headline6"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:drawableLeft="@drawable/ic_phone_24_black"
+                android:drawablePadding="10dp"
+                android:drawableTint="@color/black"
+                android:hint="Phone"
+                android:inputType="text"
+                android:padding="8dp"
+                android:textColor="#191818"
+                android:textColorHint="#92979A"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.476"
+                app:layout_constraintStart_toStartOf="parent" />
+
+
+            <TextView
+                android:id="@+id/unverified_email"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:layout_marginTop="20dp"
+                android:drawablePadding="10dp"
+                android:gravity="center"
+                android:inputType="text"
+                android:padding="8dp"
+                android:text="Unverified email!"
+                android:textColor="#FB0101"
+                android:textSize="18sp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.476"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_edit_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/blue1"
+                android:text="edit "
+                app:icon="@drawable/ic_outline_mode_edit_outline_24_white"
+                android:paddingStart="10dp"
+                />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_delete_account"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:paddingStart="10dp"
+                android:text="delete account"
+                app:backgroundTint="#F84646"
+                app:icon="@drawable/ic_outline_cancel_24_white" />
+
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="60dp"
+                >
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_logout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="30dp"
+                    android:paddingStart="10dp"
+                    android:text="logout"
+                    app:backgroundTint="#F84646"
+                    app:icon="@drawable/ic_outline_logout_24_white" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_change_password"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/blue1"
+                    android:text="change password"
+                    />
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+</FrameLayout>

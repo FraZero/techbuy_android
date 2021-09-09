@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EditProfile">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="230dp"
+                >
+
+                <ImageView
+                    android:id="@+id/photo"
+                    android:layout_width="150dp"
+                    android:layout_height="200dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_centerHorizontal="true"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_person_24_black" />
+
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_edit_photo"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="290dp"
+                    android:layout_marginTop="150dp"
+                    android:onClick="editPhotoProfile"
+                    android:paddingStart="8dp"
+                    app:icon="@drawable/ic_outline_add_to_photos_24_white" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_take_picture"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="290dp"
+                    android:layout_marginTop="100dp"
+                    android:onClick="takePictureCamera"
+                    android:paddingStart="8dp"
+                    app:icon="@drawable/ic_outline_add_a_photo_24_white"
+
+                    />
+
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_go_back"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="20dp"
+                    android:paddingStart="8dp"
+                    app:icon="@drawable/ic_baseline_arrow_back_24_white"
+                    android:onClick="goBack"
+
+                    />
+
+            </RelativeLayout>
+
+
+            <TextView
+                android:id="@+id/info"
+                style="@style/TextAppearance.MaterialComponents.Headline6"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:gravity="center"
+                android:inputType="text"
+                android:padding="8dp"
+                android:text="Informazioni Profilo"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.476"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <EditText
+                android:id="@+id/fullname_text"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_margin="4dp"
+                android:drawableStart="@drawable/ic_person_24_black"
+                android:drawablePadding="10dp"
+                app:endIconMode="clear_text"
+                android:hint="@string/fullname"
+                android:textSize="18sp">
+
+            </EditText>
+
+
+
+            <EditText
+                android:id="@+id/phone_text"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_margin="4dp"
+                app:endIconMode="clear_text"
+                android:drawableStart="@drawable/ic_phone_24_black"
+                android:drawablePadding="10dp"
+                android:hint="@string/phone"
+                android:textSize="18sp">
+
+            </EditText>
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:textColor="@color/white"
+                android:text="save info "
+                app:icon="@drawable/ic_baseline_save_alt_24_white"
+                android:paddingStart="10dp"
+                android:onClick="save"
+                />
+
+
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

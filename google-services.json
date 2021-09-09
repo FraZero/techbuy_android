@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "26642919883",
+    "project_id": "prova-1ed82",
+    "storage_bucket": "prova-1ed82.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:26642919883:android:a644cd93216f488eb3864e",
+        "android_client_info": {
+          "package_name": "com.unimol.prova_upload_image"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "26642919883-sbeq0lfnh31ueqr1dbognd2kjiqvu181.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.unimol.prova_upload_image",
+            "certificate_hash": "0da8f2f3a79b63e833bd56da2a52a8aacadd5d6c"
+          }
+        },
+        {
+          "client_id": "26642919883-27umjg6p3med5i9iqs9b81i64rn6q4rc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpPFDgug1QvVQzFeeD93mJP0hIxzL1LGg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "26642919883-27umjg6p3med5i9iqs9b81i64rn6q4rc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
