@@ -1,4 +1,4 @@
-package com.unimol.prova_upload_image;
+package com.unimol.prova_upload_image.products;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,44 +27,44 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.unimol.prova_upload_image.Product;
+import com.unimol.prova_upload_image.R;
 import com.unimol.prova_upload_image.adapter.ProductViewHolder;
 
-public class PcDesktop extends AppCompatActivity {
-
-    private RecyclerView recyclerViewPcDesktop;
-    private FirebaseFirestore firestore;
+public class Notebook extends AppCompatActivity {
+    private RecyclerView recyclerViewNotebook;
+    private FirebaseFirestore firestoreDB;
     private CollectionReference referenceProducts;
     private CollectionReference referenceUsers;
     private FirestoreRecyclerOptions<Product> options;
     private FirestoreRecyclerAdapter<Product, ProductViewHolder> adapter;
-    private String idUser, idProduct, sellerEmail, sellerPhone;
+    private String idUser, idProduct, sellerEmail;
     private FirebaseStorage storage;
     private StorageReference storageReference;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pc_desktop);
+        setContentView(R.layout.activity_notebook);
 
-        recyclerViewPcDesktop = findViewById(R.id.recycleview_pc_Desktop);
+        recyclerViewNotebook = findViewById(R.id.recycleview_notebook);
 
-        firestore = FirebaseFirestore.getInstance();
-        referenceProducts = firestore.collection("products");
-        referenceUsers = firestore.collection("users");
+        firestoreDB = FirebaseFirestore.getInstance();
+        referenceProducts = firestoreDB.collection("products");
+        referenceUsers = firestoreDB.collection("users");
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
-        recyclerViewPcDesktop.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        recyclerViewPcDesktop.setHasFixedSize(true);
+        recyclerViewNotebook.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        recyclerViewNotebook.setHasFixedSize(true);
 
-        showPcDesktopProducts();
+        showNotebookProducts();
 
     }
 
-    private void showPcDesktopProducts() {
+    private void showNotebookProducts() {
         options = new FirestoreRecyclerOptions.Builder<Product>()
-                .setQuery(referenceProducts.whereEqualTo("category", "Pc Desktop"), Product.class).build();
+                .setQuery(referenceProducts.whereEqualTo("category", "Notebook"), Product.class).build();
 
         adapter = new FirestoreRecyclerAdapter<Product, ProductViewHolder>(options) {
             @Override
@@ -76,7 +76,7 @@ public class PcDesktop extends AppCompatActivity {
                 holder.conditionProduct.setText(model.getCondition());
                 holder.priceProduct.setText(model.getPrice());
                 holder.sellerMail.setText(model.getSeller());
-                //idUser = model.getSeller();
+
                 referenceUsers.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -100,14 +100,14 @@ public class PcDesktop extends AppCompatActivity {
                             @Override
                             public void onSuccess(Uri uri) {
                                 String photoUrl = uri.toString();
-                                Glide.with(PcDesktop.this).load(photoUrl).into(holder.photoProduct);
+                                Glide.with(Notebook.this).load(photoUrl).into(holder.photoProduct);
                             }
                         });
 
                 holder.moreInfoProduct.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(PcDesktop.this);
+                        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(Notebook.this);
                         builder.setTitle("Products grading");
                         builder.setMessage("New of stock : The product is new, it's still packed in its original box." + "\n" + "\n"
                                 + "Grading A : The products have no aesthetic defects, are functional and are to be considered as like new." + "\n"+ "\n"
@@ -124,7 +124,6 @@ public class PcDesktop extends AppCompatActivity {
                 });
 
                 sellerEmail = model.getSeller();
-
                 holder.sellerMail.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -135,10 +134,10 @@ public class PcDesktop extends AppCompatActivity {
                             if (intent.resolveActivity(getPackageManager()) != null ){
                                 startActivity(intent);
                             } else {
-                                Toast.makeText(PcDesktop.this, "There is no application that support this action" , Toast.LENGTH_LONG).show();
+                                Toast.makeText(Notebook.this, "There is no application that support this action" , Toast.LENGTH_LONG).show();
                             }
                         } catch (Exception e) {
-                            Toast.makeText(PcDesktop.this, "Error" + e , Toast.LENGTH_LONG).show();
+                            Toast.makeText(Notebook.this, "Error" + e , Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -163,6 +162,7 @@ public class PcDesktop extends AppCompatActivity {
             }
         };
         adapter.startListening();
-        recyclerViewPcDesktop.setAdapter(adapter);
+        recyclerViewNotebook.setAdapter(adapter);
+
     }
 }

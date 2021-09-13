@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.material.card.MaterialCardView;
+import com.unimol.prova_upload_image.products.Notebook;
+import com.unimol.prova_upload_image.products.PcDesktop;
 
 
 public class Home extends Fragment {
@@ -31,7 +33,15 @@ public class Home extends Fragment {
             pcDesktop.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(getContext(),PcDesktop.class);
+                    Intent intent = new Intent(getContext(), PcDesktop.class);
+                    startActivity(intent);
+                }
+            });
+
+            notebook.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getContext(), Notebook.class);
                     startActivity(intent);
                 }
             });
