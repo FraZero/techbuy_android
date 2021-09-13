@@ -1,5 +1,6 @@
 package com.unimol.prova_upload_image;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -27,7 +28,13 @@ public class Home extends Fragment {
             smartwatch = fragmentHome.findViewById(R.id.smartwatch);
             accessories = fragmentHome.findViewById(R.id.accessories);
 
-
+            pcDesktop.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getContext(),PcDesktop.class);
+                    startActivity(intent);
+                }
+            });
 
             // Inflate the layout for this fragment
             return fragmentHome;

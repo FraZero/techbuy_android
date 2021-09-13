@@ -2,6 +2,7 @@ package com.unimol.prova_upload_image;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,11 +23,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -58,6 +61,7 @@ public class AddProduct extends Fragment {
     private FirebaseFirestore firestore;
     private FirebaseAuth auth;
     private FirebaseUser user;
+    private TextView moreInfo;
 
 
     @Override
@@ -94,11 +98,13 @@ public class AddProduct extends Fragment {
         btnPhotoProduct = fragmentAddProduct.findViewById(R.id.btn_photo_product);
         btnAddProduct = fragmentAddProduct.findViewById(R.id.btn_add);
 
+        moreInfo = fragmentAddProduct.findViewById(R.id.more_info);
+
        id = GenerateRandomString.randomString(20);
 
        priceEdit.setFilters(new InputFilter[]{ new DecimalDigitsInputFilter(9,2)});
 
-        autoCompletePlace.setAdapter(new PlaceAutoSuggestAdapter(getContext(),R.layout.dropdown_item_place));
+       autoCompletePlace.setAdapter(new PlaceAutoSuggestAdapter(getContext(),R.layout.dropdown_item_place));
 
         //creiamo un array di stringhe che contine le nostre categorie
         String[] categories = new String[]
@@ -110,7 +116,7 @@ public class AddProduct extends Fragment {
 
         //creiamo un array di stringhe che contine le condizioni del'oggetto
         String[] conditions = new String[]
-                {"New", "Grading A", "Grading B", "Grading C", "Grading D" };
+                {"New of stock", "Grading A", "Grading B", "Grading C", "Grading D" };
         //creiamo un arrayadapter e andiamo a configurarlo
         ArrayAdapter<String> adapterConditions = new ArrayAdapter<>(getContext(), R.layout.dropdown_item_conditions, conditions);
         //settiamo l'adapter al autoCompleteText
@@ -130,12 +136,31 @@ public class AddProduct extends Fragment {
             }
         });
 
+        moreInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
+                builder.setTitle("Products grading");
+                builder.setMessage("New of stock : The product is new, it's still packed in its original box." + "\n" + "\n"
+                + "Grading A : The products have no aesthetic defects, are functional and are to be considered as like new." + "\n"+ "\n"
+                + "Grading B : The products are technically functional but may have very slight aesthetic defects on the body " +
+                        "or slight scratches on the screen, visible when the screen is off" + "\n" + "\n"
+                + "Grading C : The products have scratches / signs of wear or fading along the frame " +
+                        "that do not compromise operation and are to be considered in normal wear." + "\n"  + "\n"
+                + "Grading D : The products have scratches / signs of wear or fading along the frame in some cases " +
+                        "they may also have scratches on the glass or small dents that do not compromise operation " +
+                        "are to be considered very worn. ");
+
+                builder.create().show();
+            }
+        });
+
 
         return fragmentAddProduct;
     }
 
     private void addProduct() {
-        String title, description, city, category, condition, price, seller,codeID;
+        String title, description, city, category, condition, price, seller ,codeID;
 
         title = titleEdit.getText().toString();
         description = descriptionEdit.getText().toString();
@@ -168,7 +193,7 @@ public class AddProduct extends Fragment {
                 priceText.setError("Price is required!");
         }else {
 
-            Map<String, Object> newProduct = new HashMap<>();
+          /*  Map<String, Object> newProduct = new HashMap<>();
             newProduct.put("title", title);
             newProduct.put("description", description);
             newProduct.put("city", city);
@@ -176,8 +201,9 @@ public class AddProduct extends Fragment {
             newProduct.put("condition", condition);
             newProduct.put("price", price);
             newProduct.put("seller", seller);
-            newProduct.put("codeID", codeID);
+            newProduct.put("codeID", codeID);*/
 
+            Product newProduct = new Product(title, description, city, category, condition, price, seller, codeID);
             firestore.collection("products").document(id).set(newProduct).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void unused) {
@@ -240,7 +266,6 @@ public class AddProduct extends Fragment {
                 });
 
     }
-
 
     private static class GenerateRandomString {
         public static final String DATA = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
