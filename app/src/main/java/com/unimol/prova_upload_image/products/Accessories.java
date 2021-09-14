@@ -27,13 +27,13 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.unimol.prova_upload_image.models.Product;
 import com.unimol.prova_upload_image.R;
 import com.unimol.prova_upload_image.adapter.ProductViewHolder;
+import com.unimol.prova_upload_image.models.Product;
 
-public class PcDesktop extends AppCompatActivity {
+public class Accessories extends AppCompatActivity {
 
-    private RecyclerView recyclerViewPcDesktop;
+    private RecyclerView recyclerViewAccessories;
     private FirebaseFirestore firestore;
     private CollectionReference referenceProducts;
     private CollectionReference referenceUsers;
@@ -43,13 +43,12 @@ public class PcDesktop extends AppCompatActivity {
     private FirebaseStorage storage;
     private StorageReference storageReference;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pc_desktop);
+        setContentView(R.layout.activity_accessories);
 
-        recyclerViewPcDesktop = findViewById(R.id.recycleview_pc_Desktop);
+        recyclerViewAccessories = findViewById(R.id.recycleview_accessories);
 
         firestore = FirebaseFirestore.getInstance();
         referenceProducts = firestore.collection("products");
@@ -57,16 +56,15 @@ public class PcDesktop extends AppCompatActivity {
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
-        recyclerViewPcDesktop.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        recyclerViewPcDesktop.setHasFixedSize(true);
+        recyclerViewAccessories.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        recyclerViewAccessories.setHasFixedSize(true);
 
-        showPcDesktopProducts();
-
+        showAccessoriesProducts();
     }
 
-    private void showPcDesktopProducts() {
+    private void showAccessoriesProducts() {
         options = new FirestoreRecyclerOptions.Builder<Product>()
-                .setQuery(referenceProducts.whereEqualTo("category", "Pc Desktop"), Product.class).build();
+                .setQuery(referenceProducts.whereEqualTo("category", "Accessories"), Product.class).build();
 
         adapter = new FirestoreRecyclerAdapter<Product, ProductViewHolder>(options) {
             @Override
@@ -102,14 +100,14 @@ public class PcDesktop extends AppCompatActivity {
                             @Override
                             public void onSuccess(Uri uri) {
                                 String photoUrl = uri.toString();
-                                Glide.with(PcDesktop.this).load(photoUrl).into(holder.photoProduct);
+                                Glide.with(Accessories.this).load(photoUrl).into(holder.photoProduct);
                             }
                         });
 
                 holder.moreInfoProduct.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(PcDesktop.this);
+                        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(Accessories.this);
                         builder.setTitle("Products grading");
                         builder.setMessage("New of stock : The product is new, it's still packed in its original box." + "\n" + "\n"
                                 + "Grading A : The products have no aesthetic defects, are functional and are to be considered as like new." + "\n"+ "\n"
@@ -136,10 +134,10 @@ public class PcDesktop extends AppCompatActivity {
                             if (intent.resolveActivity(getPackageManager()) != null ){
                                 startActivity(intent);
                             } else {
-                                Toast.makeText(PcDesktop.this, "There is no application that support this action" , Toast.LENGTH_LONG).show();
+                                Toast.makeText(Accessories.this, "There is no application that support this action" , Toast.LENGTH_LONG).show();
                             }
                         } catch (Exception e) {
-                            Toast.makeText(PcDesktop.this, "Error" + e , Toast.LENGTH_LONG).show();
+                            Toast.makeText(Accessories.this, "Error" + e , Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -164,6 +162,7 @@ public class PcDesktop extends AppCompatActivity {
             }
         };
         adapter.startListening();
-        recyclerViewPcDesktop.setAdapter(adapter);
+        recyclerViewAccessories.setAdapter(adapter);
+
     }
 }

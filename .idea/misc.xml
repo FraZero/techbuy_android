@@ -7,6 +7,7 @@
         <entry key="app/src/main/res/drawable/ic_baseline_textsms_24_black.xml" value="0.13518518518518519" />
         <entry key="app/src/main/res/drawable/ic_outline_add_to_photos_24_black.xml" value="0.40370370370370373" />
         <entry key="app/src/main/res/drawable/ic_outline_add_to_photos_24_white.xml" value="0.40370370370370373" />
+        <entry key="app/src/main/res/layout/activity_accessories.xml" value="0.3867753623188406" />
         <entry key="app/src/main/res/layout/activity_edit_profile.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.2450966165409989" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
@@ -14,6 +15,9 @@
         <entry key="app/src/main/res/layout/activity_pc_desktop.xml" value="0.23050184530466108" />
         <entry key="app/src/main/res/layout/activity_pc_desktop_product.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_smartphone.xml" value="0.3867753623188406" />
+        <entry key="app/src/main/res/layout/activity_smartwatch.xml" value="0.3867753623188406" />
+        <entry key="app/src/main/res/layout/activity_tablet.xml" value="0.3867753623188406" />
         <entry key="app/src/main/res/layout/dropdown_item.xml" value="0.2545289855072464" />
         <entry key="app/src/main/res/layout/dropdown_item_conditions.xml" value="0.5" />
         <entry key="app/src/main/res/layout/dropdown_item_place.xml" value="0.2545289855072464" />

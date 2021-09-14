@@ -10,8 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.material.card.MaterialCardView;
+import com.unimol.prova_upload_image.products.Accessories;
 import com.unimol.prova_upload_image.products.Notebook;
 import com.unimol.prova_upload_image.products.PcDesktop;
+import com.unimol.prova_upload_image.products.Smartphone;
+import com.unimol.prova_upload_image.products.Smartwatch;
+import com.unimol.prova_upload_image.products.Tablet;
 
 
 public class Home extends Fragment {
@@ -45,6 +49,39 @@ public class Home extends Fragment {
                     startActivity(intent);
                 }
             });
+
+            tablet.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getContext(), Tablet.class);
+                    startActivity(intent);
+                }
+            });
+
+            smartphone.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getContext(), Smartphone.class);
+                    startActivity(intent);
+                }
+            });
+
+        smartwatch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), Smartwatch.class);
+                startActivity(intent);
+            }
+        });
+
+        accessories.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), Accessories.class);
+                startActivity(intent);
+            }
+        });
+
 
             // Inflate the layout for this fragment
             return fragmentHome;

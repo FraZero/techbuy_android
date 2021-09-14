@@ -17,6 +17,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Prova_upload_image">
         <activity
+            android:name=".products.Accessories"
+            android:exported="true" />
+        <activity
+            android:name=".products.Smartwatch"
+            android:exported="true" />
+        <activity
+            android:name=".products.Smartphone"
+            android:exported="true" />
+        <activity
+            android:name=".products.Tablet"
+            android:exported="true" />
+        <activity
             android:name=".products.Notebook"
             android:exported="true" />
         <activity

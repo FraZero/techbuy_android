@@ -1,4 +1,4 @@
-package com.unimol.prova_upload_image;
+package com.unimol.prova_upload_image.models;
 
 public class Product {
 
