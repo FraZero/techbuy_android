@@ -153,7 +153,7 @@ public class Smartphone extends AppCompatActivity {
                         startActivity(intent);
                     }
                 });
-                
+
             }
 
             @NonNull

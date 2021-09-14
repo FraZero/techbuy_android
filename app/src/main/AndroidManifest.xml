@@ -17,6 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Prova_upload_image">
         <activity
+            android:name=".EditProduct"
+            android:exported="true" />
+        <activity
             android:name=".products.Accessories"
             android:exported="true" />
         <activity

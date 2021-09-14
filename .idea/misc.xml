@@ -8,6 +8,7 @@
         <entry key="app/src/main/res/drawable/ic_outline_add_to_photos_24_black.xml" value="0.40370370370370373" />
         <entry key="app/src/main/res/drawable/ic_outline_add_to_photos_24_white.xml" value="0.40370370370370373" />
         <entry key="app/src/main/res/layout/activity_accessories.xml" value="0.3867753623188406" />
+        <entry key="app/src/main/res/layout/activity_edit_product.xml" value="0.3867753623188406" />
         <entry key="app/src/main/res/layout/activity_edit_profile.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.2450966165409989" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
@@ -28,6 +29,7 @@
         <entry key="app/src/main/res/layout/fragment_pc_desktops.xml" value="0.39479166666666665" />
         <entry key="app/src/main/res/layout/modal_bottom_sheet_upload_immage.xml" value="0.375" />
         <entry key="app/src/main/res/layout/recycler_layout.xml" value="0.2545289855072464" />
+        <entry key="app/src/main/res/layout/single_my_product_view_layout.xml" value="0.375" />
         <entry key="app/src/main/res/layout/single_product_view_layout.xml" value="0.23125" />
         <entry key="app/src/main/res/menu/bottom_navigation_menu.xml" value="0.3425925925925926" />
       </map>
