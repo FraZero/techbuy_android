@@ -34,7 +34,10 @@ import com.google.firebase.firestore.WriteBatch;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public class Account extends Fragment {
 
@@ -139,16 +142,31 @@ public class Account extends Fragment {
                             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                                 //permette di gestire più query nello stesso tempo
                                 WriteBatch batch = firestore.batch();
-
+                                ArrayList<String> idsArray = new ArrayList<>();
                                 List<DocumentSnapshot> snapshotList = queryDocumentSnapshots.getDocuments();
                                 for (DocumentSnapshot snapshot: snapshotList){
-                                    batch.delete(snapshot.getReference());
+                                    idsArray.add(snapshot.getId());
+                                   batch.delete(snapshot.getReference());
+                                }
+                                for (String idProd : idsArray) {
+                                    storageReference.child("images/" + "products/" + idProd + ".jpg")
+                                            .delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            Log.v("products images", "delete");
+                                            Toast.makeText(getContext(), "superato", Toast.LENGTH_LONG).show();
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
                                 }
                                 batch.commit().addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void unused) {
                                         Log.v("DeleteAll", "delete all documente where seller = id");
-
                                     }
                                 }).addOnFailureListener( new OnFailureListener() {
                                     @Override

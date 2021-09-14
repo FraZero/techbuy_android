@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.internal.NavigationMenuItemView;
-import com.google.android.material.navigation.NavigationView;
 
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
@@ -29,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
     Account accountfragment = new Account();
-    Favourite favouritefragment = new Favourite();
+    Notifications notificationsfragment = new Notifications();
     Home homefragment = new Home();
     AddProduct addProductfragment = new AddProduct();
     MyProducts myProductsfragment = new MyProducts();
@@ -44,9 +42,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                         .replace(R.id.container_bar, homefragment).commit();
                 return true;
 
-            case R.id.navigation_favourite:
+            case R.id.navigation_notifications:
                 getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
-                        .replace(R.id.container_bar, favouritefragment).commit();
+                        .replace(R.id.container_bar, notificationsfragment).commit();
                 return true;
 
             case R.id.navigation_add_product:
