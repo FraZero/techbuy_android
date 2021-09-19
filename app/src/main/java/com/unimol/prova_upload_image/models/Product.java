@@ -3,8 +3,9 @@ package com.unimol.prova_upload_image.models;
 public class Product {
 
     public String title, description, city, category, condition, price, seller, codeID;
+    public long deadline;
 
-    public Product(String title, String description, String city, String category, String condition, String price, String seller, String codeID) {
+    public Product(String title, String description, String city, String category, String condition, String price, String seller, String codeID, long deadline) {
         this.title = title;
         this.description = description;
         this.city = city;
@@ -13,6 +14,7 @@ public class Product {
         this.price = price;
         this.seller = seller;
         this.codeID = codeID;
+        this.deadline = deadline;
     }
 
     public Product() {
@@ -80,5 +82,13 @@ public class Product {
 
     public void setCodeID(String codeID) {
         this.codeID = codeID;
+    }
+
+    public long getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(long deadline) {
+        this.deadline = deadline;
     }
 }

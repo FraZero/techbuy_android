@@ -18,18 +18,24 @@ import com.bumptech.glide.Glide;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.unimol.prova_upload_image.R;
 import com.unimol.prova_upload_image.adapter.ProductViewHolder;
 import com.unimol.prova_upload_image.models.Product;
+
+import java.util.Date;
+import java.util.List;
 
 public class Smartwatch extends AppCompatActivity {
     private RecyclerView recyclerViewSmartwatch;
@@ -51,6 +57,33 @@ public class Smartwatch extends AppCompatActivity {
 
         firestore = FirebaseFirestore.getInstance();
         referenceProducts = firestore.collection("products");
+
+        firestore.collection("products").whereLessThanOrEqualTo("deadline", new Date().getTime()).get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        WriteBatch batch = firestore.batch();
+                        List<DocumentSnapshot> snapshotList = queryDocumentSnapshots.getDocuments();
+                        for (DocumentSnapshot snapshot : snapshotList) {
+                            batch.delete(snapshot.getReference());
+                        }
+                        System.out.println("deleted expired article");
+
+                        batch.commit().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Log.v("DeleteAll", "delete all documente where seller = id");
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.v("DeleteAll", "Failure");
+                            }
+                        });
+                    }
+                });
+
+
         referenceUsers = firestore.collection("users");
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
@@ -66,7 +99,7 @@ public class Smartwatch extends AppCompatActivity {
         options = new FirestoreRecyclerOptions.Builder<Product>()
                 .setQuery(referenceProducts.whereEqualTo("category", "Smartwatch"), Product.class).build();
 
-        adapter =  new FirestoreRecyclerAdapter<Product, ProductViewHolder>(options) {
+        adapter = new FirestoreRecyclerAdapter<Product, ProductViewHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull ProductViewHolder holder, int position, @NonNull Product model) {
                 holder.titleProduct.setText(model.getTitle());
@@ -80,10 +113,10 @@ public class Smartwatch extends AppCompatActivity {
                 referenceUsers.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()){
-                            for (QueryDocumentSnapshot document : task.getResult()){
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
                                 idUser = model.getSeller();
-                                if(idUser.equals(document.getId())){
+                                if (idUser.equals(document.getId())) {
                                     holder.sellerPhone.setText(document.get("phone").toString());
                                 }
                             }
@@ -110,11 +143,11 @@ public class Smartwatch extends AppCompatActivity {
                         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(Smartwatch.this);
                         builder.setTitle("Products grading");
                         builder.setMessage("New of stock : The product is new, it's still packed in its original box." + "\n" + "\n"
-                                + "Grading A : The products have no aesthetic defects, are functional and are to be considered as like new." + "\n"+ "\n"
+                                + "Grading A : The products have no aesthetic defects, are functional and are to be considered as like new." + "\n" + "\n"
                                 + "Grading B : The products are technically functional but may have very slight aesthetic defects on the body " +
                                 "or slight scratches on the screen, visible when the screen is off" + "\n" + "\n"
                                 + "Grading C : The products have scratches / signs of wear or fading along the frame " +
-                                "that do not compromise operation and are to be considered in normal wear." + "\n"  + "\n"
+                                "that do not compromise operation and are to be considered in normal wear." + "\n" + "\n"
                                 + "Grading D : The products have scratches / signs of wear or fading along the frame in some cases " +
                                 "they may also have scratches on the glass or small dents that do not compromise operation " +
                                 "are to be considered very worn. ");
@@ -129,15 +162,15 @@ public class Smartwatch extends AppCompatActivity {
                     public void onClick(View v) {
                         try {
                             Intent intent = new Intent(Intent.ACTION_SEND);
-                            intent.putExtra(Intent.EXTRA_EMAIL, new String[] {sellerEmail});
+                            intent.putExtra(Intent.EXTRA_EMAIL, new String[]{sellerEmail});
                             intent.setType("message/rfc822");
-                            if (intent.resolveActivity(getPackageManager()) != null ){
+                            if (intent.resolveActivity(getPackageManager()) != null) {
                                 startActivity(intent);
                             } else {
-                                Toast.makeText(Smartwatch.this, "There is no application that support this action" , Toast.LENGTH_LONG).show();
+                                Toast.makeText(Smartwatch.this, "There is no application that support this action", Toast.LENGTH_LONG).show();
                             }
                         } catch (Exception e) {
-                            Toast.makeText(Smartwatch.this, "Error" + e , Toast.LENGTH_LONG).show();
+                            Toast.makeText(Smartwatch.this, "Error" + e, Toast.LENGTH_LONG).show();
                         }
                     }
                 });

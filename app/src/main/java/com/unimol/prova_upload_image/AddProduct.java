@@ -1,8 +1,11 @@
 package com.unimol.prova_upload_image;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -20,6 +23,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +44,11 @@ import com.google.firebase.storage.UploadTask;
 import com.unimol.prova_upload_image.adapter.PlaceAutoSuggestAdapter;
 import com.unimol.prova_upload_image.models.Product;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -60,11 +70,15 @@ public class AddProduct extends Fragment {
     private FirebaseUser user;
     private TextView moreInfo;
 
+    private EditText deadlineChooser;
+    DatePickerDialog.OnDateSetListener setDeadlineChooserListener;
+    private String dateDeadline;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final  View fragmentAddProduct = inflater.inflate(R.layout.fragment_add_product, container, false);
+        final View fragmentAddProduct = inflater.inflate(R.layout.fragment_add_product, container, false);
 
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
@@ -97,11 +111,38 @@ public class AddProduct extends Fragment {
 
         moreInfo = fragmentAddProduct.findViewById(R.id.more_info);
 
-       id = GenerateRandomString.randomString(20);
+        //
+        deadlineChooser = fragmentAddProduct.findViewById(R.id.deadline_edittext);
+        Calendar calendar = Calendar.getInstance();
+        final int year = calendar.get(Calendar.YEAR);
+        final int month = calendar.get(Calendar.MONTH);
+        final int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-       priceEdit.setFilters(new InputFilter[]{ new DecimalDigitsInputFilter(9,2)});
+        deadlineChooser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), setDeadlineChooserListener, year, month, day);
+                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+                datePickerDialog.show();
+            }
+        });
 
-       autoCompletePlace.setAdapter(new PlaceAutoSuggestAdapter(getContext(),R.layout.dropdown_item_place));
+        setDeadlineChooserListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                i1 = i1 + 1;
+                String date = i2 + "/" + i1 + "/" + i;
+                dateDeadline = date;
+                deadlineChooser.setText(date);
+            }
+        };
+        //
+
+        id = GenerateRandomString.randomString(20);
+
+        priceEdit.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(9, 2)});
+
+        autoCompletePlace.setAdapter(new PlaceAutoSuggestAdapter(getContext(), R.layout.dropdown_item_place));
 
         //creiamo un array di stringhe che contine le nostre categorie
         String[] categories = new String[]
@@ -113,7 +154,7 @@ public class AddProduct extends Fragment {
 
         //creiamo un array di stringhe che contine le condizioni del'oggetto
         String[] conditions = new String[]
-                {"New of stock", "Grading A", "Grading B", "Grading C", "Grading D" };
+                {"New of stock", "Grading A", "Grading B", "Grading C", "Grading D"};
         //creiamo un arrayadapter e andiamo a configurarlo
         ArrayAdapter<String> adapterConditions = new ArrayAdapter<>(getContext(), R.layout.dropdown_item_conditions, conditions);
         //settiamo l'adapter al autoCompleteText
@@ -129,7 +170,18 @@ public class AddProduct extends Fragment {
         btnAddProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addProduct();
+                try {
+                    if (!titleEdit.getText().toString().equals("") &&
+                            !autoCompletePlace.toString().equals("") &&
+                            !autoCompleteCategory.toString().equals("") &&
+                            !autoCompleteCondition.toString().equals("") &&
+                            !priceEdit.getText().toString().equals("") &&
+                            !deadlineChooser.getText().toString().equals("")){
+                        addProduct();
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -139,12 +191,12 @@ public class AddProduct extends Fragment {
                 MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
                 builder.setTitle("Products grading");
                 builder.setMessage("New of stock : The product is new, it's still packed in its original box." + "\n" + "\n"
-                + "Grading A : The products have no aesthetic defects, are functional and are to be considered as like new." + "\n"+ "\n"
-                + "Grading B : The products are technically functional but may have very slight aesthetic defects on the body " +
+                        + "Grading A : The products have no aesthetic defects, are functional and are to be considered as like new." + "\n" + "\n"
+                        + "Grading B : The products are technically functional but may have very slight aesthetic defects on the body " +
                         "or slight scratches on the screen, visible when the screen is off" + "\n" + "\n"
-                + "Grading C : The products have scratches / signs of wear or fading along the frame " +
-                        "that do not compromise operation and are to be considered in normal wear." + "\n"  + "\n"
-                + "Grading D : The products have scratches / signs of wear or fading along the frame in some cases " +
+                        + "Grading C : The products have scratches / signs of wear or fading along the frame " +
+                        "that do not compromise operation and are to be considered in normal wear." + "\n" + "\n"
+                        + "Grading D : The products have scratches / signs of wear or fading along the frame in some cases " +
                         "they may also have scratches on the glass or small dents that do not compromise operation " +
                         "are to be considered very worn. ");
 
@@ -156,8 +208,16 @@ public class AddProduct extends Fragment {
         return fragmentAddProduct;
     }
 
-    private void addProduct() {
-        String title, description, city, category, condition, price, seller ,codeID;
+    private void addProduct() throws ParseException {
+        String title;
+        String description;
+        String city;
+        String category;
+        String condition;
+        String price;
+        String seller;
+        String codeID;
+        long deadline;
 
         title = titleEdit.getText().toString();
         description = descriptionEdit.getText().toString();
@@ -168,27 +228,31 @@ public class AddProduct extends Fragment {
         seller = user.getEmail();
         codeID = id;
 
+        //date
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = (Date) formatter.parse(dateDeadline);
+        deadline = date.getTime();
 
         //checkFields
         if (title.isEmpty() && description.isEmpty() && city.isEmpty() && category.isEmpty()
-                    && condition.isEmpty() && price.isEmpty() ) {
-                Toast.makeText(getContext(), "Error: All fields must be completed!", Toast.LENGTH_SHORT).show();
-        } else if (title.isEmpty()){
-                titleText.setError("Title is required!");
-        } else if (description.isEmpty()){
-                descriptionText.setError("Description is required!");
-        }else if (city.isEmpty()){
-                placeText.setError("City is required!");
+                && condition.isEmpty() && price.isEmpty()) {
+            Toast.makeText(getContext(), "Error: All fields must be completed!", Toast.LENGTH_SHORT).show();
+        } else if (title.isEmpty()) {
+            titleText.setError("Title is required!");
+        } else if (description.isEmpty()) {
+            descriptionText.setError("Description is required!");
+        } else if (city.isEmpty()) {
+            placeText.setError("City is required!");
             Toast.makeText(getContext(), "City is required!", Toast.LENGTH_SHORT).show();
-        }else if (category.isEmpty()){
-                categoryChoice.setError("Category is required!");
+        } else if (category.isEmpty()) {
+            categoryChoice.setError("Category is required!");
             Toast.makeText(getContext(), "Category is required!", Toast.LENGTH_SHORT).show();
-        }else if (condition.isEmpty()){
-                conditionChoice.setError("Condition of product is required!");
+        } else if (condition.isEmpty()) {
+            conditionChoice.setError("Condition of product is required!");
             Toast.makeText(getContext(), "Condition of product is required!", Toast.LENGTH_SHORT).show();
-        }else if (price.isEmpty()){
-                priceText.setError("Price is required!");
-        }else {
+        } else if (price.isEmpty()) {
+            priceText.setError("Price is required!");
+        } else {
 
           /*  Map<String, Object> newProduct = new HashMap<>();
             newProduct.put("title", title);
@@ -200,7 +264,7 @@ public class AddProduct extends Fragment {
             newProduct.put("seller", seller);
             newProduct.put("codeID", codeID);*/
 
-            Product newProduct = new Product(title, description, city, category, condition, price, seller, codeID);
+            Product newProduct = new Product(title, description, city, category, condition, price, seller, codeID, deadline);
             firestore.collection("products").document(id).set(newProduct).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void unused) {
@@ -245,7 +309,7 @@ public class AddProduct extends Fragment {
         final ProgressDialog pd = new ProgressDialog(getContext());
         pd.setTitle("Caricamento immagine...");
         pd.show();
-        StorageReference imageRef = storageReference.child("images/"+"products/" + id + ".jpg");
+        StorageReference imageRef = storageReference.child("images/" + "products/" + id + ".jpg");
 
         imageRef.putFile(imageUri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -281,9 +345,11 @@ public class AddProduct extends Fragment {
 
     class DecimalDigitsInputFilter implements InputFilter {
         private Pattern mPattern;
+
         DecimalDigitsInputFilter(int digitsBeforeZero, int digitsAfterZero) {
             mPattern = Pattern.compile("[0-9]{0," + (digitsBeforeZero - 1) + "}+((\\.[0-9]{0," + (digitsAfterZero - 1) + "})?)||(\\.)?");
         }
+
         @Override
         public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
             Matcher matcher = mPattern.matcher(dest);

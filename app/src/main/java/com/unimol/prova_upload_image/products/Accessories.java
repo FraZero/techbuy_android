@@ -18,18 +18,25 @@ import com.bumptech.glide.Glide;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.unimol.prova_upload_image.R;
 import com.unimol.prova_upload_image.adapter.ProductViewHolder;
 import com.unimol.prova_upload_image.models.Product;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class Accessories extends AppCompatActivity {
 
@@ -52,6 +59,32 @@ public class Accessories extends AppCompatActivity {
 
         firestore = FirebaseFirestore.getInstance();
         referenceProducts = firestore.collection("products");
+
+        firestore.collection("products").whereLessThanOrEqualTo("deadline", new Date().getTime()).get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        WriteBatch batch = firestore.batch();
+                        List<DocumentSnapshot> snapshotList = queryDocumentSnapshots.getDocuments();
+                        for (DocumentSnapshot snapshot : snapshotList) {
+                            batch.delete(snapshot.getReference());
+                        }
+                        System.out.println("deleted expired article");
+
+                        batch.commit().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Log.v("DeleteAll", "delete all documente where seller = id");
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.v("DeleteAll", "Failure");
+                            }
+                        });
+                    }
+                });
+
         referenceUsers = firestore.collection("users");
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
