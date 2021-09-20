@@ -11,7 +11,7 @@ import com.google.android.material.button.MaterialButton;
 import com.unimol.prova_upload_image.R;
 
 public class MyProductViewHolder extends RecyclerView.ViewHolder {
-    public TextView titleMyProduct, descriptionMyProduct, cityMyProduct, categoryMyProduct, conditionMyProduct, priceMyProduct, moreInfoMyProduct;
+    public TextView titleMyProduct, descriptionMyProduct, cityMyProduct, categoryMyProduct, conditionMyProduct, priceMyProduct, moreInfoMyProduct, deadlineMyProduct;
     public ImageView photoMyProduct;
     public MaterialButton deleteMyProduct, editMyProduct;
 
@@ -28,6 +28,6 @@ public class MyProductViewHolder extends RecyclerView.ViewHolder {
         moreInfoMyProduct = itemView.findViewById(R.id.more_info_my_product);
         deleteMyProduct = itemView.findViewById(R.id.btn_delete_product);
         editMyProduct = itemView.findViewById(R.id.btn_edit_product);
-
+        deadlineMyProduct = itemView.findViewById(R.id.expiry_my_ads);
     }
 }

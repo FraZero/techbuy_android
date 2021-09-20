@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,8 +35,10 @@ import com.unimol.prova_upload_image.models.Product;
 import com.unimol.prova_upload_image.R;
 import com.unimol.prova_upload_image.adapter.ProductViewHolder;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class PcDesktop extends AppCompatActivity {
 
@@ -109,6 +112,12 @@ public class PcDesktop extends AppCompatActivity {
                 holder.conditionProduct.setText(model.getCondition());
                 holder.priceProduct.setText(model.getPrice());
                 holder.sellerMail.setText(model.getSeller());
+
+                Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+                cal.setTimeInMillis(model.getDeadline());
+                String date = DateFormat.format("dd/MM/yyyy", cal).toString();
+
+                holder.deadlineProduct.setText(date);
 
                 referenceUsers.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,8 +38,10 @@ import com.unimol.prova_upload_image.adapter.ProductViewHolder;
 import com.unimol.prova_upload_image.models.Product;
 import com.unimol.prova_upload_image.products.PcDesktop;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MyProducts extends Fragment {
     RecyclerView recyclerViewMyProducts;
@@ -116,6 +119,12 @@ public class MyProducts extends Fragment {
                 holder.categoryMyProduct.setText(model.getCategory());
                 holder.conditionMyProduct.setText(model.getCondition());
                 holder.priceMyProduct.setText(model.getPrice());
+
+                Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+                cal.setTimeInMillis(model.getDeadline());
+                String date = DateFormat.format("dd/MM/yyyy", cal).toString();
+
+                holder.deadlineMyProduct.setText(date);
 
                 idProduct = model.getCodeID();
                 storageReference.child("images/" + "products/" + idProduct + ".jpg").getDownloadUrl()

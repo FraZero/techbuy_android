@@ -11,7 +11,7 @@ import com.unimol.prova_upload_image.R;
 
 public class ProductViewHolder extends RecyclerView.ViewHolder {
 
-    public TextView titleProduct, descriptionProduct, cityProduct, categoryProduct, conditionProduct, priceProduct, sellerMail, sellerPhone, moreInfoProduct;
+    public TextView titleProduct, descriptionProduct, cityProduct, categoryProduct, conditionProduct, priceProduct, sellerMail, sellerPhone, moreInfoProduct, deadlineProduct;
     public ImageView photoProduct;
 
 
@@ -28,7 +28,6 @@ public class ProductViewHolder extends RecyclerView.ViewHolder {
         sellerPhone = itemView.findViewById(R.id.seller_phone);
         photoProduct = itemView.findViewById(R.id.photo_product);
         moreInfoProduct = itemView.findViewById(R.id.more_info_product);
-
-
+        deadlineProduct = itemView.findViewById(R.id.expiry_ads);
     }
 }
