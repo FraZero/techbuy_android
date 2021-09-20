@@ -28,6 +28,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -46,7 +47,7 @@ public class EditProfile extends AppCompatActivity {
 
     private ImageView photo;
     private MaterialButton editPhoto, takePicture, save;
-    private EditText fullnameEdit, phoneEdit;
+    private TextInputEditText fullnameEdit, phoneEdit;
     private String id;
     private Uri imageUri;
     private FirebaseFirestore firestore;
@@ -107,26 +108,29 @@ public class EditProfile extends AppCompatActivity {
         fullname = fullnameEdit.getText().toString();
         phone = phoneEdit.getText().toString();
 
-        Map<String, Object> userMap = new HashMap<>();
+        if (phone.length() == 10) {
 
-        userMap.put("name", fullname);
-        userMap.put("phone", phone);
+            Map<String, Object> userMap = new HashMap<>();
 
-        firestore.collection("users")
-                .document(id)
-                .update(userMap)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Toast.makeText(EditProfile.this, "Edit successfully ", Toast.LENGTH_LONG).show();
-                        startActivity(new Intent(EditProfile.this, MainActivity.class));
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(EditProfile.this, "Edit fail! ", Toast.LENGTH_LONG).show();
-            }
-        });
+            userMap.put("name", fullname);
+            userMap.put("phone", phone);
+
+            firestore.collection("users")
+                    .document(id)
+                    .update(userMap)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Toast.makeText(EditProfile.this, "Edit successfully ", Toast.LENGTH_LONG).show();
+                            startActivity(new Intent(EditProfile.this, MainActivity.class));
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(EditProfile.this, "Edit fail! ", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
 
     }
 

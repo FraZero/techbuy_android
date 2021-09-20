@@ -161,9 +161,8 @@
                     android:layout_marginRight="12dp"
                     android:layout_toStartOf="@id/create_account_btn"
                     android:layout_toLeftOf="@id/create_account_btn"
-                    android:text="@string/login"
                     android:onClick="goToLogin"
-                    />
+                    android:text="@string/login" />
 
             </RelativeLayout>
 

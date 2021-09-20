@@ -1,11 +1,10 @@
 package com.unimol.prova_upload_image;
 
 import android.app.Activity;
+
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -29,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
@@ -37,6 +37,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -44,20 +45,23 @@ import com.google.firebase.storage.UploadTask;
 import com.unimol.prova_upload_image.adapter.PlaceAutoSuggestAdapter;
 import com.unimol.prova_upload_image.models.Product;
 
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
+
 public class AddProduct extends Fragment {
 
     private TextInputLayout titleText, descriptionText, categoryChoice, conditionChoice, placeText, priceText;
-    private TextInputEditText titleEdit, descriptionEdit, priceEdit;
+    private TextInputEditText titleEdit, descriptionEdit, priceEdit, deadlineChooser;
     private AutoCompleteTextView autoCompleteCategory, autoCompleteCondition, autoCompletePlace;
     private ImageView imageProduct;
     private MaterialButton btnPhotoProduct, btnAddProduct;
@@ -69,8 +73,11 @@ public class AddProduct extends Fragment {
     private FirebaseAuth auth;
     private FirebaseUser user;
     private TextView moreInfo;
+    private CollectionReference productCollection;
 
-    private EditText deadlineChooser;
+
+
+   // private EditText deadlineChooser;
     DatePickerDialog.OnDateSetListener setDeadlineChooserListener;
     private String dateDeadline;
 
@@ -85,6 +92,7 @@ public class AddProduct extends Fragment {
         firestore = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
+        productCollection = firestore.collection("products");
 
         titleText = fragmentAddProduct.findViewById(R.id.title_text);
         titleEdit = fragmentAddProduct.findViewById(R.id.title_edit);
@@ -122,8 +130,9 @@ public class AddProduct extends Fragment {
             @Override
             public void onClick(View view) {
                 DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), setDeadlineChooserListener, year, month, day);
-                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() +86400000);
                 datePickerDialog.show();
+
             }
         });
 
@@ -204,9 +213,9 @@ public class AddProduct extends Fragment {
             }
         });
 
-
         return fragmentAddProduct;
     }
+
 
     private void addProduct() throws ParseException {
         String title;
@@ -219,11 +228,11 @@ public class AddProduct extends Fragment {
         String codeID;
         long deadline;
 
-        title = titleEdit.getText().toString();
+        title = titleEdit.getText().toString().toLowerCase();
         description = descriptionEdit.getText().toString();
-        city = autoCompletePlace.getText().toString();
+        city = autoCompletePlace.getText().toString().toLowerCase();
         category = autoCompleteCategory.getText().toString();
-        condition = autoCompleteCondition.getText().toString();
+        condition = autoCompleteCondition.getText().toString().toLowerCase();
         price = priceEdit.getText().toString();
         seller = user.getEmail();
         codeID = id;
@@ -265,7 +274,8 @@ public class AddProduct extends Fragment {
             newProduct.put("codeID", codeID);*/
 
             Product newProduct = new Product(title, description, city, category, condition, price, seller, codeID, deadline);
-            firestore.collection("products").document(id).set(newProduct).addOnSuccessListener(new OnSuccessListener<Void>() {
+            productCollection.document(id).set(newProduct).addOnSuccessListener(new OnSuccessListener<Void>() {
+
                 @Override
                 public void onSuccess(Void unused) {
                     Toast.makeText(getContext(), "Added product!", Toast.LENGTH_LONG).show();
@@ -280,7 +290,9 @@ public class AddProduct extends Fragment {
             });
 
         }
+
     }
+
 
     private void choosePhoto() {
         Intent intent = new Intent();

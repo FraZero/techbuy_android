@@ -5,9 +5,9 @@
         android:icon="@drawable/ic_home_24_white"
         android:title="Home" />
     <item
-        android:id="@+id/navigation_notifications"
-        android:icon="@drawable/ic_baseline_notifications_24_white"
-        android:title="Notifications" />
+        android:id="@+id/navigation_search"
+        android:icon="@drawable/ic_sharp_search_24"
+        android:title="Search" />
     <item
         android:id="@+id/navigation_add_product"
         android:icon="@drawable/ic_add_circle_24_white"

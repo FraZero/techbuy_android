@@ -89,35 +89,45 @@
                 app:layout_constraintHorizontal_bias="0.476"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <EditText
-                android:id="@+id/fullname_text"
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/fullname_input"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:layout_margin="4dp"
-                android:drawableStart="@drawable/ic_person_24_black"
-                android:drawablePadding="10dp"
+                app:startIconDrawable="@drawable/ic_person_24_black"
                 app:endIconMode="clear_text"
-                android:hint="@string/fullname"
-                android:textSize="18sp">
+                android:hint="@string/fullname">
 
-            </EditText>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/fullname_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-
-
-            <EditText
-                android:id="@+id/phone_text"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/phone_input"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:layout_margin="4dp"
+                app:prefixText="+39"
                 app:endIconMode="clear_text"
-                android:drawableStart="@drawable/ic_phone_24_black"
-                android:drawablePadding="10dp"
-                android:hint="@string/phone"
-                android:textSize="18sp">
+                app:startIconDrawable="@drawable/ic_phone_24_black"
+                android:hint="@string/phone">
 
-            </EditText>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/phone_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="phone"
+                    android:maxLength="10"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
 
 
             <com.google.android.material.button.MaterialButton

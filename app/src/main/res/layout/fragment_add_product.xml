@@ -178,15 +178,37 @@
                     android:focusable="true"
                     android:paddingEnd="15dp"
                     android:text="More Info"
-                    android:textColor="@color/blue1"/>
+                    android:textColor="@color/blue1"
+                    />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/deadline_text"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    app:endIconMode="clear_text"
+                    android:hint="Expiry Ads"
+                    android:textAlignment="center"
+                    >
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/deadline_edittext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                         />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/price_text"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="175dp"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginStart="70dp"
+                    android:layout_toEndOf="@id/deadline_text"
                     app:startIconDrawable="@drawable/ic_outline_euro_24_black"
                     app:endIconMode="clear_text"
                     android:hint="@string/price"
@@ -197,18 +219,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="numberDecimal"
+                        android:layout_toEndOf="@id/deadline_edittext"
                         />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <EditText
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/deadline_edittext"
-                    android:hint="Scadenza Articolo"
-                    android:textSize="20sp"
-                    android:textAlignment="center"
-                    android:layout_toEndOf="@+id/price_text"
-                    android:layout_marginLeft="10dp"/>
 
             </RelativeLayout>
 

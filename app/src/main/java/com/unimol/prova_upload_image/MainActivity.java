@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
     Account accountfragment = new Account();
-    Notifications notificationsfragment = new Notifications();
+    Search searchfragment = new Search();
     Home homefragment = new Home();
     AddProduct addProductfragment = new AddProduct();
     MyProducts myProductsfragment = new MyProducts();
@@ -42,9 +42,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                         .replace(R.id.container_bar, homefragment).commit();
                 return true;
 
-            case R.id.navigation_notifications:
+            case R.id.navigation_search:
                 getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
-                        .replace(R.id.container_bar, notificationsfragment).commit();
+                        .replace(R.id.container_bar, searchfragment).commit();
                 return true;
 
             case R.id.navigation_add_product:
