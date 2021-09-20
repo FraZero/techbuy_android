@@ -200,12 +200,33 @@
                     android:textColor="@color/blue1" />
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/deadline_my_text"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    app:endIconMode="clear_text"
+                    android:hint="Expiry Ads"
+                    android:textAlignment="center"
+                    >
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/deadline_my_edittext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/price_my_text"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_toEndOf="@id/deadline_my_text"
                     app:startIconDrawable="@drawable/ic_outline_euro_24_black"
                     app:endIconMode="clear_text"
                     android:hint="@string/price"
@@ -216,6 +237,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="numberDecimal"
+                        android:layout_toEndOf="@id/deadline_edittext"
                         />
                 </com.google.android.material.textfield.TextInputLayout>
 

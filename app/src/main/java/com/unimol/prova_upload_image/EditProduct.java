@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +41,11 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.unimol.prova_upload_image.adapter.PlaceAutoSuggestAdapter;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -46,7 +53,7 @@ import java.util.regex.Pattern;
 
 public class EditProduct extends AppCompatActivity {
     private TextInputLayout titleText, descriptionText, categoryChoice, conditionChoice, placeText, priceText;
-    private TextInputEditText titleEdit, descriptionEdit, priceEdit;
+    private TextInputEditText titleEdit, descriptionEdit, priceEdit, deadlineChooser;
     private AutoCompleteTextView autoCompleteCategory, autoCompleteCondition, autoCompletePlace;
     private ImageView imageProduct;
     private MaterialButton btnEditPhotoProduct, btnSaveSpecifications, btnBack;
@@ -59,6 +66,9 @@ public class EditProduct extends AppCompatActivity {
     private FirebaseAuth auth;
     private FirebaseUser user;
     private CollectionReference referenceProducts;
+
+    DatePickerDialog.OnDateSetListener setDeadlineChooserListener;
+    private String dateDeadline;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,10 +112,37 @@ public class EditProduct extends AppCompatActivity {
         btnEditPhotoProduct = findViewById(R.id.btn_edit_photo_product);
         btnSaveSpecifications = findViewById(R.id.btn_save_my_changes);
         btnBack = findViewById(R.id.btn_back);
+        deadlineChooser = findViewById(R.id.deadline_my_edittext);
 
-        priceEdit.setFilters(new InputFilter[]{ new EditProduct.DecimalDigitsInputFilter(9,2)});
+        //
+        Calendar calendar = Calendar.getInstance();
+        final int year = calendar.get(Calendar.YEAR);
+        final int month = calendar.get(Calendar.MONTH);
+        final int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        autoCompletePlace.setAdapter(new PlaceAutoSuggestAdapter(getApplicationContext(),R.layout.dropdown_item_place));
+        deadlineChooser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(EditProduct.this, setDeadlineChooserListener, year, month, day);
+                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
+                datePickerDialog.show();
+            }
+        });
+
+        setDeadlineChooserListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                i1 = i1 + 1;
+                String date = i2 + "/" + i1 + "/" + i;
+                dateDeadline = date;
+                deadlineChooser.setText(date);
+            }
+        };
+        //
+
+        priceEdit.setFilters(new InputFilter[]{new EditProduct.DecimalDigitsInputFilter(9, 2)});
+
+        autoCompletePlace.setAdapter(new PlaceAutoSuggestAdapter(getApplicationContext(), R.layout.dropdown_item_place));
 
         String[] categories = new String[]
                 {"Pc Desktop", "Notebook", "Tablet", "Smartphone", "Smartwatch", "Accessories"};
@@ -113,16 +150,16 @@ public class EditProduct extends AppCompatActivity {
         autoCompleteCategory.setAdapter(adapterCategories);
 
         String[] conditions = new String[]
-                {"New of stock", "Grading A", "Grading B", "Grading C", "Grading D" };
+                {"New of stock", "Grading A", "Grading B", "Grading C", "Grading D"};
         ArrayAdapter<String> adapterConditions = new ArrayAdapter<>(getApplicationContext(), R.layout.dropdown_item_conditions, conditions);
         autoCompleteCondition.setAdapter(adapterConditions);
 
         referenceProducts.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()){
-                    for (QueryDocumentSnapshot document : task.getResult()){
-                        if (idMyProduct.equals(document.getId())){
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        if (idMyProduct.equals(document.getId())) {
                             titleEdit.setText(document.get("title").toString());
                             descriptionEdit.setText(document.get("description").toString());
                             autoCompletePlace.setText(document.get("city").toString());
@@ -130,7 +167,7 @@ public class EditProduct extends AppCompatActivity {
                             autoCompleteCondition.setText(document.get("condition").toString());
                             priceEdit.setText(document.get("price").toString());
 
-                            storageReference.child("images/"+"products/"+ idMyProduct + ".jpg").getDownloadUrl()
+                            storageReference.child("images/" + "products/" + idMyProduct + ".jpg").getDownloadUrl()
                                     .addOnSuccessListener(new OnSuccessListener<Uri>() {
                                         @Override
                                         public void onSuccess(Uri uri) {
@@ -154,11 +191,11 @@ public class EditProduct extends AppCompatActivity {
                 MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(EditProduct.this);
                 builder.setTitle("Products grading");
                 builder.setMessage("New of stock : The product is new, it's still packed in its original box." + "\n" + "\n"
-                        + "Grading A : The products have no aesthetic defects, are functional and are to be considered as like new." + "\n"+ "\n"
+                        + "Grading A : The products have no aesthetic defects, are functional and are to be considered as like new." + "\n" + "\n"
                         + "Grading B : The products are technically functional but may have very slight aesthetic defects on the body " +
                         "or slight scratches on the screen, visible when the screen is off" + "\n" + "\n"
                         + "Grading C : The products have scratches / signs of wear or fading along the frame " +
-                        "that do not compromise operation and are to be considered in normal wear." + "\n"  + "\n"
+                        "that do not compromise operation and are to be considered in normal wear." + "\n" + "\n"
                         + "Grading D : The products have scratches / signs of wear or fading along the frame in some cases " +
                         "they may also have scratches on the glass or small dents that do not compromise operation " +
                         "are to be considered very worn. ");
@@ -198,7 +235,7 @@ public class EditProduct extends AppCompatActivity {
         dialog.show();
 
         StorageReference imageRef;
-        imageRef = FirebaseStorage.getInstance().getReference("images/"+"products/"+ idMyProduct + ".jpg");
+        imageRef = FirebaseStorage.getInstance().getReference("images/" + "products/" + idMyProduct + ".jpg");
         imageRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -217,46 +254,64 @@ public class EditProduct extends AppCompatActivity {
         });
     }
 
-    public void saveSpecifications(View view) {
-        String title, description, city, category, condition, price;
+    public void saveSpecifications(View view) throws ParseException {
 
-        title = titleEdit.getText().toString();
+        String title, description, city, category, condition, price;
+        long deadline;
+
+        title = titleEdit.getText().toString().toLowerCase();
         description = descriptionEdit.getText().toString();
-        city = autoCompletePlace.getText().toString();
-        category = autoCompleteCategory.getText().toString();
+        city = autoCompletePlace.getText().toString().toLowerCase();
+        category = autoCompleteCategory.getText().toString().toLowerCase();
         condition = autoCompleteCondition.getText().toString();
         price = priceEdit.getText().toString();
 
-        Map<String, Object> editProductMap = new HashMap<>();
-        editProductMap.put("title", title);
-        editProductMap.put("description", description);
-        editProductMap.put("city", city);
-        editProductMap.put("category", category);
-        editProductMap.put("condition", condition);
-        editProductMap.put("price", price);
+        //date
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = (Date) formatter.parse(dateDeadline);
+        deadline = date.getTime();
 
-        referenceProducts.document(idMyProduct)
-                .update(editProductMap)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                Toast.makeText(EditProduct.this, "Edit successfully ", Toast.LENGTH_LONG).show();
-                startActivity(new Intent(EditProduct.this, MainActivity.class));
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(EditProduct.this, "Edit fail! ", Toast.LENGTH_LONG).show();
-            }
-        });
+        if (!title.equals("") &&
+                !description.equals("") &&
+                !city.equals("") &&
+                !category.equals("") &&
+                !condition.equals("") &&
+                !price.equals("")) {
+
+            Map<String, Object> editProductMap = new HashMap<>();
+            editProductMap.put("title", title);
+            editProductMap.put("description", description);
+            editProductMap.put("city", city);
+            editProductMap.put("category", category);
+            editProductMap.put("condition", condition);
+            editProductMap.put("price", price);
+            editProductMap.put("deadline", deadline);
+
+            referenceProducts.document(idMyProduct)
+                    .update(editProductMap)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Toast.makeText(EditProduct.this, "Edit successfully ", Toast.LENGTH_LONG).show();
+                            startActivity(new Intent(EditProduct.this, MainActivity.class));
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(EditProduct.this, "Edit fail! ", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
     }
 
 
     class DecimalDigitsInputFilter implements InputFilter {
         private Pattern mPattern;
+
         DecimalDigitsInputFilter(int digitsBeforeZero, int digitsAfterZero) {
             mPattern = Pattern.compile("[0-9]{0," + (digitsBeforeZero - 1) + "}+((\\.[0-9]{0," + (digitsAfterZero - 1) + "})?)||(\\.)?");
         }
+
         @Override
         public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
             Matcher matcher = mPattern.matcher(dest);

@@ -57,7 +57,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-
 public class AddProduct extends Fragment {
 
     private TextInputLayout titleText, descriptionText, categoryChoice, conditionChoice, placeText, priceText;
@@ -75,9 +74,6 @@ public class AddProduct extends Fragment {
     private TextView moreInfo;
     private CollectionReference productCollection;
 
-
-
-   // private EditText deadlineChooser;
     DatePickerDialog.OnDateSetListener setDeadlineChooserListener;
     private String dateDeadline;
 
@@ -130,7 +126,7 @@ public class AddProduct extends Fragment {
             @Override
             public void onClick(View view) {
                 DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), setDeadlineChooserListener, year, month, day);
-                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() +86400000);
+                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() + 86400000);
                 datePickerDialog.show();
 
             }
@@ -185,7 +181,7 @@ public class AddProduct extends Fragment {
                             !autoCompleteCategory.toString().equals("") &&
                             !autoCompleteCondition.toString().equals("") &&
                             !priceEdit.getText().toString().equals("") &&
-                            !deadlineChooser.getText().toString().equals("")){
+                            !deadlineChooser.getText().toString().equals("")) {
                         addProduct();
                     }
                 } catch (ParseException e) {

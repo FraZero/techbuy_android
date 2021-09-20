@@ -26,13 +26,19 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.unimol.prova_upload_image.adapter.MyProductViewHolder;
 import com.unimol.prova_upload_image.adapter.ProductViewHolder;
 import com.unimol.prova_upload_image.models.Product;
 import com.unimol.prova_upload_image.products.PcDesktop;
+
+import java.util.Date;
+import java.util.List;
 
 public class MyProducts extends Fragment {
     RecyclerView recyclerViewMyProducts;
@@ -55,6 +61,32 @@ public class MyProducts extends Fragment {
         recyclerViewMyProducts = fragmentMyProducts.findViewById(R.id.recycleview_my_products);
 
         firestore = FirebaseFirestore.getInstance();
+
+        firestore.collection("products").whereLessThanOrEqualTo("deadline", new Date().getTime()).get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        WriteBatch batch = firestore.batch();
+                        List<DocumentSnapshot> snapshotList = queryDocumentSnapshots.getDocuments();
+                        for (DocumentSnapshot snapshot : snapshotList) {
+                            batch.delete(snapshot.getReference());
+                        }
+                        System.out.println("deleted expired article");
+
+                        batch.commit().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Log.v("DeleteAll", "delete all documente where seller = id");
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.v("DeleteAll", "Failure");
+                            }
+                        });
+                    }
+                });
+
         referenceProducts = firestore.collection("products");
         referenceUsers = firestore.collection("users");
         storage = FirebaseStorage.getInstance();
