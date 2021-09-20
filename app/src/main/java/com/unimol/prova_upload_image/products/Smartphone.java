@@ -137,6 +137,16 @@ public class Smartphone extends AppCompatActivity {
                             }
                         });
 
+                holder.cityProduct.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(Smartphone.this, FindPlace.class);
+                        intent.putExtra("endpoint", holder.cityProduct.getText().toString());
+                        startActivity(intent);
+                    }
+                });
+
+
                 holder.moreInfoProduct.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
